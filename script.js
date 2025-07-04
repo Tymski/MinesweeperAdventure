@@ -318,11 +318,19 @@ document.addEventListener('DOMContentLoaded', () => {
         drawBoard();
     }
 
+    function setActiveDifficultyButton(activeButton) {
+        easyBtn.classList.remove('active-difficulty');
+        mediumBtn.classList.remove('active-difficulty');
+        hardBtn.classList.remove('active-difficulty');
+        activeButton.classList.add('active-difficulty');
+    }
+
     easyBtn.addEventListener('click', () => {
         MINE_DENSITY = 0.13;
         ROWS = 9;
         COLS = 9;
         restartGame();
+        setActiveDifficultyButton(easyBtn);
     });
 
     mediumBtn.addEventListener('click', () => {
@@ -330,6 +338,7 @@ document.addEventListener('DOMContentLoaded', () => {
         ROWS = 11;
         COLS = 11;
         restartGame();
+        setActiveDifficultyButton(mediumBtn);
     });
 
     hardBtn.addEventListener('click', () => {
@@ -337,11 +346,13 @@ document.addEventListener('DOMContentLoaded', () => {
         ROWS = 13;
         COLS = 13;
         restartGame();
+        setActiveDifficultyButton(hardBtn);
     });
 
     document.addEventListener('keydown', handleKeyDown);
     restartBtn.addEventListener('click', restartGame);
 
     updateCounters();
+    setActiveDifficultyButton(mediumBtn); // Set initial active difficulty
     restartGame();
 });
