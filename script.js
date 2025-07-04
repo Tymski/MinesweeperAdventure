@@ -2,9 +2,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const canvas = document.getElementById('minesweeper-canvas');
     const ctx = canvas.getContext('2d');
     const restartBtn = document.getElementById('restart-btn');
-    const modal = document.getElementById('modal');
-    const modalMessage = document.getElementById('modal-message');
-    const modalRestartBtn = document.getElementById('modal-restart-btn');
     const easyBtn = document.getElementById('easy-btn');
     const mediumBtn = document.getElementById('medium-btn');
     const hardBtn = document.getElementById('hard-btn');
@@ -28,7 +25,16 @@ document.addEventListener('DOMContentLoaded', () => {
     let wins = 0;
     let losses = 0;
 
-    function updateCounters() {
+    function updateCounters(isWin) {
+        if (isWin) {
+            winsCounter.parentElement.classList.add('score-animation');
+        } else {
+            lossesCounter.parentElement.classList.add('score-animation');
+        }
+        setTimeout(() => {
+            winsCounter.parentElement.classList.remove('score-animation');
+            lossesCounter.parentElement.classList.remove('score-animation');
+        }, 1000);
         winsCounter.textContent = wins;
         lossesCounter.textContent = losses;
     }
@@ -104,6 +110,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     ctx.fillStyle = cell.isRevealed ? '#e0e0e0' : '#c0c0c0';
                 }
                 ctx.fillRect(x, y, CELL_SIZE, CELL_SIZE);
+
+                if (!cell.isRevealed && !cell.isStart && !cell.isFinish) {
+                    ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+                    ctx.fillRect(x + 3, y + 3, CELL_SIZE - 6, CELL_SIZE - 6);
+                }
+
                 ctx.strokeStyle = '#808080';
                 ctx.strokeRect(x, y, CELL_SIZE, CELL_SIZE);
 
@@ -169,7 +181,7 @@ document.addEventListener('DOMContentLoaded', () => {
             losses++;
             ROWS = Math.max(5, ROWS - 1);
             COLS = Math.max(5, COLS - 1);
-            updateCounters();
+            updateCounters(false);
             startGameOverAnimation();
         } else if (cell.adjacentMines === 0) {
             for (let i = -1; i <= 1; i++) {
@@ -184,7 +196,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function startGameOverAnimation() {
         gameOver = true;
-        showModal('Game Over!');
         let growing = true;
         animationInterval = setInterval(() => {
             if (growing) {
@@ -207,6 +218,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             drawBoard();
         }, 50);
+        document.addEventListener('keydown', restartGameOnAnyKey, { once: true });
     }
 
     function checkWinCondition() {
@@ -214,10 +226,10 @@ document.addEventListener('DOMContentLoaded', () => {
             wins++;
             ROWS++;
             COLS++;
-            updateCounters();
+            updateCounters(true);
             gameOver = true;
-            showModal('You Win!');
             if (animationInterval) clearInterval(animationInterval);
+            document.addEventListener('keydown', restartGameOnAnyKey, { once: true });
         }
     }
 
@@ -240,6 +252,7 @@ document.addEventListener('DOMContentLoaded', () => {
             case 'z': toggleFlag(player.r + 1, player.c - 1); return;
             case 'x': toggleFlag(player.r + 1, player.c); return;
             case 'c': toggleFlag(player.r + 1, player.c + 1); return;
+            case 'r': restartGame(); return;
             default: return;
         }
 
@@ -273,17 +286,14 @@ document.addEventListener('DOMContentLoaded', () => {
         drawBoard();
     }
 
-    function showModal(message) {
-        modalMessage.textContent = message;
-        modal.style.display = 'block';
-        modalRestartBtn.focus();
-    }
-
-    function hideModal() {
-        modal.style.display = 'none';
+    function restartGameOnAnyKey(event) {
+        if (event.key) {
+            restartGame();
+        }
     }
 
     function restartGame() {
+        document.removeEventListener('keydown', restartGameOnAnyKey);
         gameOver = false;
         firstMove = true;
         if (animationInterval) {
@@ -294,7 +304,6 @@ document.addEventListener('DOMContentLoaded', () => {
         createBoard();
         player = { r: TOTAL_ROWS - 1, c: Math.floor(COLS / 2) };
         drawBoard();
-        hideModal();
     }
 
     easyBtn.addEventListener('click', () => {
@@ -314,7 +323,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.addEventListener('keydown', handleKeyDown);
     restartBtn.addEventListener('click', restartGame);
-    modalRestartBtn.addEventListener('click', restartGame);
 
     updateCounters();
     restartGame();

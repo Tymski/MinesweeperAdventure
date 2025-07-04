@@ -1,16 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Minesweeper Adventure</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <h1>Minesweeper Adventure</h1>
     <div class="info-panel">
-        <button id="restart-btn">Restart</button>
         <div class="difficulty-buttons">
+            <button id="restart-btn">Restart</button>
             <button id="easy-btn">Easy</button>
             <button id="medium-btn">Medium</button>
             <button id="hard-btn">Hard</button>
@@ -21,12 +23,8 @@
         </div>
     </div>
     <canvas id="minesweeper-canvas"></canvas>
-    <div id="modal" class="modal">
-        <div class="modal-content">
-            <p id="modal-message"></p>
-            <button id="modal-restart-btn">Play Again</button>
-        </div>
-    </div>
+
     <script src="script.js"></script>
 </body>
+
 </html>
