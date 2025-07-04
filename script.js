@@ -148,10 +148,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 if (cell.isRevealed) {
                     if (cell.isMine) {
-                        ctx.fillStyle = 'red';
-                        ctx.beginPath();
-                        ctx.arc(x + CELL_SIZE / 2, y + CELL_SIZE / 2, (CELL_SIZE / 3) * mineSize, 0, 2 * Math.PI);
-                        ctx.fill();
+                        if (gameOutcome === 'win') {
+                            ctx.fillStyle = 'green';
+                            ctx.beginPath();
+                            ctx.arc(x + CELL_SIZE / 2, y + CELL_SIZE / 2, CELL_SIZE / 4, 0, 2 * Math.PI);
+                            ctx.fill();
+                        } else {
+                            ctx.fillStyle = 'red';
+                            ctx.beginPath();
+                            ctx.arc(x + CELL_SIZE / 2, y + CELL_SIZE / 2, (CELL_SIZE / 3) * mineSize, 0, 2 * Math.PI);
+                            ctx.fill();
+                        }
                     } else if (cell.adjacentMines > 0) {
                         drawCharacterInCell(cell.adjacentMines, r, c, 'black');
                     }
