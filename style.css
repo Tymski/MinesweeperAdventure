@@ -40,6 +40,10 @@ h1 {
     margin: 0 5px;
 }
 
+.difficulty-buttons button.active-difficulty {
+    text-decoration: underline;
+}
+
 .score-counter span {
     margin: 0 2px;
 }
