@@ -22,6 +22,7 @@ h1 {
     margin-bottom: 10px;
     font-size: 1.2em;
     color: #fff;
+    min-width: 450px;
 }
 
 .info-panel-top-row {
@@ -31,7 +32,8 @@ h1 {
     margin-bottom: 10px;
 }
 
-.difficulty-buttons button, #restart-btn {
+.difficulty-buttons button,
+#restart-btn {
     padding: 3px 8px;
     font-size: 0.9em;
     cursor: pointer;
@@ -39,7 +41,13 @@ h1 {
 }
 
 .score-counter span {
-    margin: 0 10px;
+    margin: 0 2px;
+}
+
+.score-counter{
+    padding: 5px 10px;
+    background-color: #0000002a;
+    border-radius: 500px;
 }
 
 canvas {
@@ -47,12 +55,28 @@ canvas {
     box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
 }
 
+.win-glow {
+    box-shadow: 0 0 40px rgba(0, 255, 0, 0.8);
+}
+
+.lose-glow {
+    box-shadow: 0 0 40px rgba(255, 0, 0, 0.8);
+}
+
 .score-animation {
     animation: score-pulse 1s;
 }
 
 @keyframes score-pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.5); }
-    100% { transform: scale(1); }
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.5);
+    }
+
+    100% {
+        transform: scale(1);
+    }
 }

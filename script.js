@@ -24,6 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let mineSize = 1;
     let wins = 0;
     let losses = 0;
+    let gameOutcome = null; // null, 'win', or 'loss'
 
     function updateCounters(isWin) {
         if (isWin) {
@@ -48,6 +49,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function createBoard() {
+        if (gameOutcome === 'win') {
+            ROWS++;
+            COLS++;
+        } else if (gameOutcome === 'loss') {
+            ROWS = Math.max(5, ROWS - 1);
+            COLS = Math.max(5, COLS - 1);
+        }
+        gameOutcome = null;
+
         resizeCanvas();
         board = Array.from({ length: TOTAL_ROWS }, (row, r) =>
             Array.from({ length: COLS }, (col, c) => ({
@@ -179,8 +189,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (cell.isMine) {
             losses++;
-            ROWS = Math.max(5, ROWS - 1);
-            COLS = Math.max(5, COLS - 1);
+            gameOutcome = 'loss';
             updateCounters(false);
             startGameOverAnimation();
         } else if (cell.adjacentMines === 0) {
@@ -196,6 +205,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function startGameOverAnimation() {
         gameOver = true;
+        canvas.classList.add('lose-glow');
         let growing = true;
         animationInterval = setInterval(() => {
             if (growing) {
@@ -224,11 +234,12 @@ document.addEventListener('DOMContentLoaded', () => {
     function checkWinCondition() {
         if (player.r === 0) {
             wins++;
-            ROWS++;
-            COLS++;
+            gameOutcome = 'win';
             updateCounters(true);
             gameOver = true;
+            canvas.classList.add('win-glow');
             if (animationInterval) clearInterval(animationInterval);
+            drawBoard(); // Draw the final state before waiting for input
             document.addEventListener('keydown', restartGameOnAnyKey, { once: true });
         }
     }
@@ -294,6 +305,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function restartGame() {
         document.removeEventListener('keydown', restartGameOnAnyKey);
+        canvas.classList.remove('win-glow', 'lose-glow');
         gameOver = false;
         firstMove = true;
         if (animationInterval) {
@@ -308,16 +320,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
     easyBtn.addEventListener('click', () => {
         MINE_DENSITY = 0.13;
+        ROWS = 9;
+        COLS = 9;
         restartGame();
     });
 
     mediumBtn.addEventListener('click', () => {
         MINE_DENSITY = 0.16;
+        ROWS = 11;
+        COLS = 11;
         restartGame();
     });
 
     hardBtn.addEventListener('click', () => {
         MINE_DENSITY = 0.21;
+        ROWS = 13;
+        COLS = 13;
         restartGame();
     });
 
