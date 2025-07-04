@@ -370,6 +370,16 @@ document.addEventListener('DOMContentLoaded', () => {
     document.addEventListener('keydown', handleKeyDown);
     restartBtn.addEventListener('click', restartGame);
 
+    const upBtn = document.getElementById('up-btn');
+    const downBtn = document.getElementById('down-btn');
+    const leftBtn = document.getElementById('left-btn');
+    const rightBtn = document.getElementById('right-btn');
+
+    upBtn.addEventListener('click', (e) => { e.preventDefault(); handleInput('up'); });
+    downBtn.addEventListener('click', (e) => { e.preventDefault(); handleInput('down'); });
+    leftBtn.addEventListener('click', (e) => { e.preventDefault(); handleInput('left'); });
+    rightBtn.addEventListener('click', (e) => { e.preventDefault(); handleInput('right'); });
+
     let touchStartX = 0;
     let touchStartY = 0;
     const SWIPE_THRESHOLD = 30; // Minimum distance for a swipe
