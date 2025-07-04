@@ -367,6 +367,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let touchStartX = 0;
     let touchStartY = 0;
+    const SWIPE_THRESHOLD = 30; // Minimum distance for a swipe
 
     canvas.addEventListener('touchstart', (e) => {
         e.preventDefault();
@@ -386,19 +387,21 @@ document.addEventListener('DOMContentLoaded', () => {
         const dx = touchEndX - touchStartX;
         const dy = touchEndY - touchStartY;
 
-        if (Math.abs(dx) > Math.abs(dy)) {
-            // Horizontal swipe
-            if (dx > 0) {
-                handleInput('right');
+        if (Math.abs(dx) > SWIPE_THRESHOLD || Math.abs(dy) > SWIPE_THRESHOLD) {
+            if (Math.abs(dx) > Math.abs(dy)) {
+                // Horizontal swipe
+                if (dx > 0) {
+                    handleInput('right');
+                } else {
+                    handleInput('left');
+                }
             } else {
-                handleInput('left');
-            }
-        } else {
-            // Vertical swipe
-            if (dy > 0) {
-                handleInput('down');
-            } else {
-                handleInput('up');
+                // Vertical swipe
+                if (dy > 0) {
+                    handleInput('down');
+                } else {
+                    handleInput('up');
+                }
             }
         }
     }, { passive: false });
