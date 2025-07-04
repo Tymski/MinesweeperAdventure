@@ -38,6 +38,7 @@ h1 {
     font-size: 0.9em;
     cursor: pointer;
     margin: 0 5px;
+    background-color: rgb(177, 177, 177);
 }
 
 .difficulty-buttons button.active-difficulty {

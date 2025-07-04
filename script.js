@@ -124,10 +124,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 const x = c * CELL_SIZE;
                 const y = r * CELL_SIZE;
 
-                if (cell.isStart || cell.isFinish) {
+                if (cell.isStart) {
                     ctx.fillStyle = '#a0a0a0';
-
-                } else {
+                } else if (cell.isFinish) {
+                    ctx.fillStyle = '#9dab9d';
+                }
+                else {
                     ctx.fillStyle = cell.isRevealed ? '#e0e0e0' : '#c0c0c0';
                 }
                 ctx.fillRect(x, y, CELL_SIZE, CELL_SIZE);
