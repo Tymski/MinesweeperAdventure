@@ -145,20 +145,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 ctx.strokeStyle = '#808080';
                 ctx.strokeRect(x, y, CELL_SIZE, CELL_SIZE);
-
+                if (gameOutcome === 'win' && cell.isMine) {
+                    ctx.fillStyle = 'green';
+                    ctx.beginPath();
+                    ctx.arc(x + CELL_SIZE / 2, y + CELL_SIZE / 2, CELL_SIZE / 4, 0, 2 * Math.PI);
+                    ctx.fill();
+                }
                 if (cell.isRevealed) {
                     if (cell.isMine) {
-                        if (gameOutcome === 'win') {
-                            ctx.fillStyle = 'green';
-                            ctx.beginPath();
-                            ctx.arc(x + CELL_SIZE / 2, y + CELL_SIZE / 2, CELL_SIZE / 4, 0, 2 * Math.PI);
-                            ctx.fill();
-                        } else {
-                            ctx.fillStyle = 'red';
-                            ctx.beginPath();
-                            ctx.arc(x + CELL_SIZE / 2, y + CELL_SIZE / 2, (CELL_SIZE / 3) * mineSize, 0, 2 * Math.PI);
-                            ctx.fill();
-                        }
+                        ctx.fillStyle = 'red';
+                        ctx.beginPath();
+                        ctx.arc(x + CELL_SIZE / 2, y + CELL_SIZE / 2, (CELL_SIZE / 3) * mineSize, 0, 2 * Math.PI);
+                        ctx.fill();
                     } else if (cell.adjacentMines > 0) {
                         drawCharacterInCell(cell.adjacentMines, r, c, 'black');
                     }
@@ -330,6 +328,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function restartGame() {
         document.removeEventListener('keydown', restartGameOnAnyKey);
+        restartBtn.blur();
         canvas.classList.remove('win-glow', 'lose-glow');
         gameOver = false;
         firstMove = true;
@@ -350,27 +349,30 @@ document.addEventListener('DOMContentLoaded', () => {
         activeButton.classList.add('active-difficulty');
     }
 
-    easyBtn.addEventListener('click', () => {
+    easyBtn.addEventListener('click', (e) => {
         MINE_DENSITY = 0.13;
         ROWS = 9;
         COLS = 9;
         restartGame();
+        e.currentTarget.blur();
         setActiveDifficultyButton(easyBtn);
     });
 
-    mediumBtn.addEventListener('click', () => {
+    mediumBtn.addEventListener('click', (e) => {
         MINE_DENSITY = 0.16;
         ROWS = 11;
         COLS = 11;
         restartGame();
+        e.currentTarget.blur();
         setActiveDifficultyButton(mediumBtn);
     });
 
-    hardBtn.addEventListener('click', () => {
+    hardBtn.addEventListener('click', (e) => {
         MINE_DENSITY = 0.21;
         ROWS = 13;
         COLS = 13;
         restartGame();
+        e.currentTarget.blur();
         setActiveDifficultyButton(hardBtn);
     });
 
@@ -382,10 +384,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const leftBtn = document.getElementById('left-btn');
     const rightBtn = document.getElementById('right-btn');
 
-    upBtn.addEventListener('click', (e) => { e.preventDefault(); handleInput('up'); });
-    downBtn.addEventListener('click', (e) => { e.preventDefault(); handleInput('down'); });
-    leftBtn.addEventListener('click', (e) => { e.preventDefault(); handleInput('left'); });
-    rightBtn.addEventListener('click', (e) => { e.preventDefault(); handleInput('right'); });
+    upBtn.addEventListener('click', (e) => { e.currentTarget.blur(); e.preventDefault(); handleInput('up'); });
+    downBtn.addEventListener('click', (e) => { e.currentTarget.blur(); e.preventDefault(); handleInput('down'); });
+    leftBtn.addEventListener('click', (e) => { e.currentTarget.blur(); e.preventDefault(); handleInput('left'); });
+    rightBtn.addEventListener('click', (e) => { e.currentTarget.blur(); e.preventDefault(); handleInput('right'); });
 
     let touchStartX = 0;
     let touchStartY = 0;
