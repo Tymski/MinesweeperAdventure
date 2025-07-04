@@ -244,26 +244,20 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function handleKeyDown(event) {
-        if (gameOver) return;
+    function handleInput(direction) {
+        if (gameOver) {
+            restartGame();
+            return;
+        }
 
         let newR = player.r;
         let newC = player.c;
 
-        switch (event.key) {
-            case 'ArrowUp': newR--; break;
-            case 'ArrowDown': newR++; break;
-            case 'ArrowLeft': newC--; break;
-            case 'ArrowRight': newC++; break;
-            case 'q': toggleFlag(player.r - 1, player.c - 1); return;
-            case 'w': toggleFlag(player.r - 1, player.c); return;
-            case 'e': toggleFlag(player.r - 1, player.c + 1); return;
-            case 'a': toggleFlag(player.r, player.c - 1); return;
-            case 'd': toggleFlag(player.r, player.c + 1); return;
-            case 'z': toggleFlag(player.r + 1, player.c - 1); return;
-            case 'x': toggleFlag(player.r + 1, player.c); return;
-            case 'c': toggleFlag(player.r + 1, player.c + 1); return;
-            case 'r': restartGame(); return;
+        switch (direction) {
+            case 'up': newR--; break;
+            case 'down': newR++; break;
+            case 'left': newC--; break;
+            case 'right': newC++; break;
             default: return;
         }
 
@@ -286,6 +280,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
             checkWinCondition();
             drawBoard();
+        }
+    }
+
+    function handleKeyDown(event) {
+        switch (event.key) {
+            case 'ArrowUp': handleInput('up'); break;
+            case 'ArrowDown': handleInput('down'); break;
+            case 'ArrowLeft': handleInput('left'); break;
+            case 'ArrowRight': handleInput('right'); break;
+            case 'q': toggleFlag(player.r - 1, player.c - 1); return;
+            case 'w': toggleFlag(player.r - 1, player.c); return;
+            case 'e': toggleFlag(player.r - 1, player.c + 1); return;
+            case 'a': toggleFlag(player.r, player.c - 1); return;
+            case 'd': toggleFlag(player.r, player.c + 1); return;
+            case 'z': toggleFlag(player.r + 1, player.c - 1); return;
+            case 'x': toggleFlag(player.r + 1, player.c); return;
+            case 'c': toggleFlag(player.r + 1, player.c + 1); return;
+            case 'r': restartGame(); return;
+            default: return;
         }
     }
 
@@ -351,6 +364,44 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.addEventListener('keydown', handleKeyDown);
     restartBtn.addEventListener('click', restartGame);
+
+    let touchStartX = 0;
+    let touchStartY = 0;
+
+    canvas.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+    }, { passive: false });
+
+    canvas.addEventListener('touchmove', (e) => {
+        e.preventDefault();
+    }, { passive: false });
+
+    canvas.addEventListener('touchend', (e) => {
+        e.preventDefault();
+        const touchEndX = e.changedTouches[0].clientX;
+        const touchEndY = e.changedTouches[0].clientY;
+
+        const dx = touchEndX - touchStartX;
+        const dy = touchEndY - touchStartY;
+
+        if (Math.abs(dx) > Math.abs(dy)) {
+            // Horizontal swipe
+            if (dx > 0) {
+                handleInput('right');
+            } else {
+                handleInput('left');
+            }
+        } else {
+            // Vertical swipe
+            if (dy > 0) {
+                handleInput('down');
+            } else {
+                handleInput('up');
+            }
+        }
+    }, { passive: false });
 
     updateCounters();
     setActiveDifficultyButton(mediumBtn); // Set initial active difficulty
