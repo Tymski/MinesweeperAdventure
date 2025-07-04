@@ -106,6 +106,16 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    function drawCharacterInCell(char, r, c, color) {
+        const x = c * CELL_SIZE;
+        const y = r * CELL_SIZE;
+        ctx.fillStyle = color;
+        ctx.font = '20px Arial';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(char, x + CELL_SIZE / 2, y + CELL_SIZE / 2);
+    }
+
     function drawBoard() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         for (let r = 0; r < TOTAL_ROWS; r++) {
@@ -116,10 +126,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 if (cell.isStart || cell.isFinish) {
                     ctx.fillStyle = '#a0a0a0';
+
                 } else {
                     ctx.fillStyle = cell.isRevealed ? '#e0e0e0' : '#c0c0c0';
                 }
                 ctx.fillRect(x, y, CELL_SIZE, CELL_SIZE);
+
+                if (cell.isStart) {
+                    drawCharacterInCell('^', r, c, 'gray');
+                }
 
                 if (!cell.isRevealed && !cell.isStart && !cell.isFinish) {
                     ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
@@ -136,18 +151,10 @@ document.addEventListener('DOMContentLoaded', () => {
                         ctx.arc(x + CELL_SIZE / 2, y + CELL_SIZE / 2, (CELL_SIZE / 3) * mineSize, 0, 2 * Math.PI);
                         ctx.fill();
                     } else if (cell.adjacentMines > 0) {
-                        ctx.fillStyle = 'black';
-                        ctx.font = '20px Arial';
-                        ctx.textAlign = 'center';
-                        ctx.textBaseline = 'middle';
-                        ctx.fillText(cell.adjacentMines, x + CELL_SIZE / 2, y + CELL_SIZE / 2);
+                        drawCharacterInCell(cell.adjacentMines, r, c, 'black');
                     }
                 } else if (cell.isFlagged) {
-                    ctx.fillStyle = 'blue';
-                    ctx.font = '20px Arial';
-                    ctx.textAlign = 'center';
-                    ctx.textBaseline = 'middle';
-                    ctx.fillText('P', x + CELL_SIZE / 2, y + CELL_SIZE / 2);
+                    drawCharacterInCell('P', r, c, 'blue');
                 }
             }
         }
@@ -170,11 +177,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 ctx.arc(playerX + CELL_SIZE / 2, playerY + CELL_SIZE / 2, (CELL_SIZE / 3) * mineSize, 0, 2 * Math.PI);
                 ctx.fill();
             } else if (currentPlayerCell.adjacentMines > 0) {
-                ctx.fillStyle = 'white';
-                ctx.font = '20px Arial';
-                ctx.textAlign = 'center';
-                ctx.textBaseline = 'middle';
-                ctx.fillText(currentPlayerCell.adjacentMines, playerX + CELL_SIZE / 2, playerY + CELL_SIZE / 2);
+                drawCharacterInCell(currentPlayerCell.adjacentMines, player.r, player.c, 'white');
             }
         }
     }
