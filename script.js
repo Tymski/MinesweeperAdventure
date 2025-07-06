@@ -392,11 +392,39 @@ document.addEventListener('DOMContentLoaded', () => {
     const downBtn = document.getElementById('down-btn');
     const leftBtn = document.getElementById('left-btn');
     const rightBtn = document.getElementById('right-btn');
+    const flagBtn = document.getElementById('flag-btn');
+    const flagGrid = document.getElementById('flag-grid');
+    const arrowControls = document.querySelector('.arrow-controls');
 
     upBtn.addEventListener('click', (e) => { e.currentTarget.blur(); e.preventDefault(); handleInput('up'); });
     downBtn.addEventListener('click', (e) => { e.currentTarget.blur(); e.preventDefault(); handleInput('down'); });
     leftBtn.addEventListener('click', (e) => { e.currentTarget.blur(); e.preventDefault(); handleInput('left'); });
     rightBtn.addEventListener('click', (e) => { e.currentTarget.blur(); e.preventDefault(); handleInput('right'); });
+
+    flagBtn.addEventListener('click', (e) => {
+        e.currentTarget.blur();
+        e.preventDefault();
+        arrowControls.classList.toggle('hidden');
+        flagGrid.classList.toggle('hidden');
+    });
+
+    flagGrid.addEventListener('click', (e) => {
+        if (e.target.classList.contains('flag-grid-btn')) {
+            e.currentTarget.blur();
+            e.preventDefault();
+            const r = parseInt(e.target.dataset.r);
+            const c = parseInt(e.target.dataset.c);
+
+            if (r === 0 && c === 0) {
+                // Cancel button
+            } else {
+                toggleFlag(player.r + r, player.c + c);
+            }
+
+            arrowControls.classList.remove('hidden');
+            flagGrid.classList.add('hidden');
+        }
+    });
 
     let touchStartX = 0;
     let touchStartY = 0;
