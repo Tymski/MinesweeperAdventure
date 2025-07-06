@@ -406,6 +406,7 @@ document.addEventListener('DOMContentLoaded', () => {
         e.preventDefault();
         arrowControls.classList.toggle('hidden');
         flagGrid.classList.toggle('hidden');
+        flagBtn.classList.toggle('hidden');
     });
 
     flagGrid.addEventListener('click', (e) => {
@@ -423,6 +424,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             arrowControls.classList.remove('hidden');
             flagGrid.classList.add('hidden');
+            flagBtn.classList.remove('hidden');
         }
     });
 

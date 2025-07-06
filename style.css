@@ -107,11 +107,6 @@ canvas {
     align-items: center;
 }
 
-.horizontal-controls {
-    display: flex;
-    gap: 10px;
-}
-
 .controls button {
     width: 60px;
     height: 60px;
@@ -125,8 +120,6 @@ canvas {
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
-    border: none;
-    border-radius: 5px;
 }
 
 .arrow-btn .v-shape {
@@ -153,7 +146,6 @@ canvas {
 
 .horizontal-controls {
     display: flex;
-    gap: 10px;
     align-items: center;
 }
 
@@ -179,21 +171,60 @@ canvas {
 
 #flag-grid {
     display: grid;
-    grid-template-columns: repeat(3, 40px);
-    grid-template-rows: repeat(3, 40px);
-    gap: 5px;
-    position: absolute;
-    top: -45px;
-    left: -145px;
-    background-color: #333333a1;
-    padding: 10px;
-    border-radius: 5px;
+    grid-template-columns: repeat(3, 43px);
+    grid-template-rows: repeat(3, 43px);
+    gap: 0px;
 }
 
 .flag-grid-btn {
-    width: 40px;
-    height: 40px;
-    background-color: #c0c0c0;
+    width: 43px !important;
+    height: 43px !important;
+    background-color: rgb(177, 177, 177);
+    margin: 0;
+    padding: 0;
+    font-weight: bold;
+    color: #333;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.flag-grid-btn .v-shape {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #333;
+}
+
+.flag-grid-btn[data-r="-1"][data-c="-1"] .v-shape {
+    transform: rotate(135deg);
+}
+
+.flag-grid-btn[data-r="-1"][data-c="0"] .v-shape {
+    transform: rotate(180deg);
+}
+
+.flag-grid-btn[data-r="-1"][data-c="1"] .v-shape {
+    transform: rotate(225deg);
+}
+
+.flag-grid-btn[data-r="0"][data-c="-1"] .v-shape {
+    transform: rotate(90deg);
+}
+
+.flag-grid-btn[data-r="0"][data-c="1"] .v-shape {
+    transform: rotate(-90deg);
+}
+
+.flag-grid-btn[data-r="1"][data-c="-1"] .v-shape {
+    transform: rotate(45deg);
+}
+
+.flag-grid-btn[data-r="1"][data-c="0"] .v-shape {
+    transform: rotate(0deg);
+}
+
+.flag-grid-btn[data-r="1"][data-c="1"] .v-shape {
+    transform: rotate(-45deg);
 }
 
 .flag-grid-btn:hover {
