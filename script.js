@@ -375,7 +375,53 @@ document.addEventListener('DOMContentLoaded', () => {
             case 'x': toggleFlag(player.r + 1, player.c); return;
             case 'c': toggleFlag(player.r + 1, player.c + 1); return;
             case 'r': restartGame(); return;
+            case ' ': // Spacebar
+            case 's': revealAroundPlayer(); return;
             default: return;
+        }
+    }
+
+    function revealAroundPlayer() {
+        const r = player.r;
+        const c = player.c;
+
+        // Ensure player is on a valid minefield cell (not start/finish rows)
+        if (r < 1 || r >= TOTAL_ROWS - 1) {
+            return;
+        }
+
+        const currentCell = board[r][c];
+
+        if (!currentCell.isRevealed || currentCell.adjacentMines === 0) {
+            return; // Only act on revealed numbered cells
+        }
+
+        let flaggedCount = 0;
+        const neighborsToReveal = [];
+
+        for (let i = -1; i <= 1; i++) {
+            for (let j = -1; j <= 1; j++) {
+                if (i === 0 && j === 0) continue;
+
+                const newRow = r + i;
+                const newCol = c + j;
+
+                // Only consider neighbors within the minefield (rows 1 to TOTAL_ROWS - 2)
+                if (newRow >= 1 && newRow < TOTAL_ROWS - 1 && newCol >= 0 && newCol < COLS) {
+                    const neighborCell = board[newRow][newCol];
+                    if (neighborCell.isFlagged) {
+                        flaggedCount++;
+                    } else if (!neighborCell.isRevealed) {
+                        neighborsToReveal.push({ r: newRow, c: newCol });
+                    }
+                }
+            }
+        }
+
+        if (flaggedCount === currentCell.adjacentMines) {
+            neighborsToReveal.forEach(pos => {
+                revealCell(pos.r, pos.c);
+            });
         }
     }
 
