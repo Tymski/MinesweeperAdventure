@@ -12,6 +12,7 @@ body {
 h1 {
     margin-bottom: 10px;
     color: #fff;
+    font-size: 1.6em;
 }
 
 .info-panel {
@@ -56,6 +57,7 @@ button {
     padding: 5px 10px;
     background-color: #0000002a;
     border-radius: 500px;
+    margin-top: 5px;
 }
 
 canvas {
