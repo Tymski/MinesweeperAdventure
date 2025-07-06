@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const hardBtn = document.getElementById('hard-btn');
     const winsCounter = document.getElementById('wins-counter');
     const lossesCounter = document.getElementById('losses-counter');
+    const bombsCounter = document.getElementById('bombs-counter');
 
     let COLS = 11;
     let ROWS = 11;
@@ -40,6 +41,12 @@ document.addEventListener('DOMContentLoaded', () => {
         lossesCounter.textContent = losses;
     }
 
+    function updateBombsCounter() {
+        const flaggedCells = board.flat().filter(cell => cell.isFlagged).length;
+        bombsCounter.textContent = NUM_MINES - flaggedCells;
+    }
+
+
     function resizeCanvas() {
         TOTAL_ROWS = ROWS + EXTRA_ROWS;
         canvas.width = COLS * CELL_SIZE;
@@ -58,6 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         gameOutcome = null;
 
+        NUM_MINES = Math.floor(COLS * ROWS * MINE_DENSITY);
         resizeCanvas();
         board = Array.from({ length: TOTAL_ROWS }, (row, r) =>
             Array.from({ length: COLS }, (col, c) => ({
@@ -72,7 +80,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function generateMines(initialR, initialC) {
-        NUM_MINES = Math.floor(COLS * ROWS * MINE_DENSITY);
         let minesPlaced = 0;
         while (minesPlaced < NUM_MINES) {
             const r = Math.floor(Math.random() * ROWS) + 1;
@@ -317,6 +324,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
         board[r][c].isFlagged = !board[r][c].isFlagged;
+        updateBombsCounter();
         drawBoard();
     }
 
@@ -338,6 +346,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         mineSize = 1;
         createBoard();
+        updateBombsCounter();
         player = { r: TOTAL_ROWS - 1, c: Math.floor(COLS / 2) };
         drawBoard();
     }
