@@ -26,6 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let wins = 0;
     let losses = 0;
     let gameOutcome = null; // null, 'win', or 'loss'
+    let moveHistory = [];
 
     function updateCounters(isWin) {
         if (isWin) {
@@ -225,6 +226,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 drawCharacterInCell(count, player.r, player.c, 'white');
             }
         }
+
+        // Draw player path if game is over
+        if (gameOver && moveHistory.length > 1) {
+            ctx.strokeStyle = 'blue';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.moveTo(moveHistory[0].c * CELL_SIZE + CELL_SIZE / 2, moveHistory[0].r * CELL_SIZE + CELL_SIZE / 2);
+            for (let i = 1; i < moveHistory.length; i++) {
+                ctx.lineTo(moveHistory[i].c * CELL_SIZE + CELL_SIZE / 2, moveHistory[i].r * CELL_SIZE + CELL_SIZE / 2);
+            }
+            ctx.stroke();
+            ctx.lineWidth = 1; // Reset to default
+        }
     }
 
     function revealCell(r, c) {
@@ -327,6 +341,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             player.r = newR;
             player.c = newC;
+            moveHistory.push({ r: player.r, c: player.c });
 
             if (!board[player.r][player.c].isStart && !board[player.r][player.c].isFinish) {
                 revealCell(player.r, player.c);
@@ -385,6 +400,7 @@ document.addEventListener('DOMContentLoaded', () => {
         createBoard();
         updateBombsCounter();
         player = { r: TOTAL_ROWS - 1, c: Math.floor(COLS / 2) };
+        moveHistory = [{ r: player.r, c: player.c }];
         drawBoard();
     }
 
