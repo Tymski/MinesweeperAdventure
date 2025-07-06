@@ -47,6 +47,12 @@ document.addEventListener('DOMContentLoaded', () => {
         bombsCounter.textContent = NUM_MINES - flaggedCells;
     }
 
+    function handleButtonClick(e, action) {
+        e.currentTarget.blur();
+        e.preventDefault();
+        action();
+    }
+
 
     function resizeCanvas() {
         TOTAL_ROWS = ROWS + EXTRA_ROWS;
@@ -412,30 +418,33 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     easyBtn.addEventListener('click', (e) => {
-        MINE_DENSITY = 0.13;
-        ROWS = 9;
-        COLS = 9;
-        restartGame();
-        e.currentTarget.blur();
-        setActiveDifficultyButton(easyBtn);
+        handleButtonClick(e, () => {
+            MINE_DENSITY = 0.13;
+            ROWS = 9;
+            COLS = 9;
+            restartGame();
+            setActiveDifficultyButton(easyBtn);
+        });
     });
 
     mediumBtn.addEventListener('click', (e) => {
-        MINE_DENSITY = 0.16;
-        ROWS = 11;
-        COLS = 11;
-        restartGame();
-        e.currentTarget.blur();
-        setActiveDifficultyButton(mediumBtn);
+        handleButtonClick(e, () => {
+            MINE_DENSITY = 0.16;
+            ROWS = 11;
+            COLS = 11;
+            restartGame();
+            setActiveDifficultyButton(mediumBtn);
+        });
     });
 
     hardBtn.addEventListener('click', (e) => {
-        MINE_DENSITY = 0.21;
-        ROWS = 13;
-        COLS = 13;
-        restartGame();
-        e.currentTarget.blur();
-        setActiveDifficultyButton(hardBtn);
+        handleButtonClick(e, () => {
+            MINE_DENSITY = 0.21;
+            ROWS = 13;
+            COLS = 13;
+            restartGame();
+            setActiveDifficultyButton(hardBtn);
+        });
     });
 
     document.addEventListener('keydown', handleKeyDown);
@@ -449,36 +458,36 @@ document.addEventListener('DOMContentLoaded', () => {
     const flagGrid = document.getElementById('flag-grid');
     const arrowControls = document.querySelector('.arrow-controls');
 
-    upBtn.addEventListener('click', (e) => { e.currentTarget.blur(); e.preventDefault(); handleInput('up'); });
-    downBtn.addEventListener('click', (e) => { e.currentTarget.blur(); e.preventDefault(); handleInput('down'); });
-    leftBtn.addEventListener('click', (e) => { e.currentTarget.blur(); e.preventDefault(); handleInput('left'); });
-    rightBtn.addEventListener('click', (e) => { e.currentTarget.blur(); e.preventDefault(); handleInput('right'); });
+    upBtn.addEventListener('click', (e) => { handleButtonClick(e, () => handleInput('up')); });
+    downBtn.addEventListener('click', (e) => { handleButtonClick(e, () => handleInput('down')); });
+    leftBtn.addEventListener('click', (e) => { handleButtonClick(e, () => handleInput('left')); });
+    rightBtn.addEventListener('click', (e) => { handleButtonClick(e, () => handleInput('right')); });
 
     flagBtn.addEventListener('click', (e) => {
-        e.currentTarget.blur();
-        e.preventDefault();
-        arrowControls.classList.toggle('hidden');
-        flagGrid.classList.toggle('hidden');
-        flagBtn.classList.toggle('hidden');
+        handleButtonClick(e, () => {
+            arrowControls.classList.toggle('hidden');
+            flagGrid.classList.toggle('hidden');
+            flagBtn.classList.toggle('hidden');
+        });
     });
 
     flagGrid.addEventListener('click', (e) => {
         const button = e.target.closest('.flag-grid-btn');
         if (button) {
-            e.currentTarget.blur();
-            e.preventDefault();
-            const r = parseInt(button.dataset.r);
-            const c = parseInt(button.dataset.c);
+            handleButtonClick(e, () => {
+                const r = parseInt(button.dataset.r);
+                const c = parseInt(button.dataset.c);
 
-            if (r === 0 && c === 0) {
-                // Cancel button
-            } else {
-                toggleFlag(player.r + r, player.c + c);
-            }
+                if (r === 0 && c === 0) {
+                    // Cancel button
+                } else {
+                    toggleFlag(player.r + r, player.c + c);
+                }
 
-            arrowControls.classList.remove('hidden');
-            flagGrid.classList.add('hidden');
-            flagBtn.classList.remove('hidden');
+                arrowControls.classList.remove('hidden');
+                flagGrid.classList.add('hidden');
+                flagBtn.classList.remove('hidden');
+            });
         }
     });
 
