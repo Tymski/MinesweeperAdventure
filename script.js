@@ -205,6 +205,25 @@ document.addEventListener('DOMContentLoaded', () => {
             } else if (currentPlayerCell.adjacentMines > 0) {
                 drawCharacterInCell(currentPlayerCell.adjacentMines, player.r, player.c, 'white');
             }
+        } else if (player.r === TOTAL_ROWS - 1 && !firstMove) {
+            let count = 0;
+            for (let i = -1; i <= 1; i++) {
+                for (let j = -1; j <= 1; j++) {
+                    if (i === 0 && j === 0) continue;
+                    const newRow = player.r + i;
+                    const newCol = player.c + j;
+                    if (
+                        newRow > 0 && newRow < TOTAL_ROWS - 1 &&
+                        newCol >= 0 && newCol < COLS &&
+                        board[newRow][newCol].isMine
+                    ) {
+                        count++;
+                    }
+                }
+            }
+            if (count > 0) {
+                drawCharacterInCell(count, player.r, player.c, 'white');
+            }
         }
     }
 
