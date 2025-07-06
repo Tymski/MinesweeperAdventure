@@ -410,11 +410,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     flagGrid.addEventListener('click', (e) => {
-        if (e.target.classList.contains('flag-grid-btn')) {
+        const button = e.target.closest('.flag-grid-btn');
+        if (button) {
             e.currentTarget.blur();
             e.preventDefault();
-            const r = parseInt(e.target.dataset.r);
-            const c = parseInt(e.target.dataset.c);
+            const r = parseInt(button.dataset.r);
+            const c = parseInt(button.dataset.c);
 
             if (r === 0 && c === 0) {
                 // Cancel button
