@@ -113,11 +113,25 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    function getNumberColor(num) {
+        switch (num) {
+            case 1: return '#0000ff'; // Blue
+            case 2: return '#008000'; // Green
+            case 3: return '#ff0000'; // Red
+            case 4: return '#00008b'; // Dark blue
+            case 5: return '#8b0000'; // Dark red
+            case 6: return '#008b8b'; // Dark cyan
+            case 7: return '#000000'; // Black
+            case 8: return '#808080'; // Grey
+            default: return '#000000';
+        }
+    }
+
     function drawCharacterInCell(char, r, c, color) {
         const x = c * CELL_SIZE;
         const y = r * CELL_SIZE;
         ctx.fillStyle = color;
-        ctx.font = '20px Arial';
+        ctx.font = 'bold 20px monospace';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         ctx.fillText(char, x + CELL_SIZE / 2, y + CELL_SIZE / 2);
@@ -165,10 +179,10 @@ document.addEventListener('DOMContentLoaded', () => {
                         ctx.arc(x + CELL_SIZE / 2, y + CELL_SIZE / 2, (CELL_SIZE / 3) * mineSize, 0, 2 * Math.PI);
                         ctx.fill();
                     } else if (cell.adjacentMines > 0) {
-                        drawCharacterInCell(cell.adjacentMines, r, c, 'black');
+                        drawCharacterInCell(cell.adjacentMines, r, c, getNumberColor(cell.adjacentMines));
                     }
                 } else if (cell.isFlagged) {
-                    drawCharacterInCell('P', r, c, 'blue');
+                    drawCharacterInCell('🚩', r, c, 'red');
                 }
             }
         }
@@ -202,6 +216,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const cell = board[r][c];
+
+        if (cell.isFlagged) {
+            cell.isFlagged = false;
+            updateBombsCounter();
+        }
+
         cell.isRevealed = true;
 
         if (cell.isMine) {

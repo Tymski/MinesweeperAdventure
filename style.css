@@ -56,8 +56,9 @@ button {
 .score-counter {
     padding: 5px 10px;
     background-color: #0000002a;
-    border-radius: 500px;
     margin-top: 5px;
+    width: 100%;
+    text-align: center;
 }
 
 canvas {
