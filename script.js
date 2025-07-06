@@ -526,7 +526,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const c = parseInt(button.dataset.c);
 
                 if (r === 0 && c === 0) {
-                    // Cancel button
+                    revealAroundPlayer();
                 } else {
                     toggleFlag(player.r + r, player.c + c);
                 }
