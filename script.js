@@ -51,8 +51,6 @@ document.addEventListener('DOMContentLoaded', () => {
         TOTAL_ROWS = ROWS + EXTRA_ROWS;
         canvas.width = COLS * CELL_SIZE;
         canvas.height = TOTAL_ROWS * CELL_SIZE;
-        const infoPanel = document.querySelector('.info-panel');
-        infoPanel.style.width = `${canvas.width}px`;
     }
 
     function createBoard() {
