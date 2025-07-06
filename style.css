@@ -50,7 +50,8 @@ button {
 }
 
 .score-counter span {
-    margin: 0 2px;
+    margin: 0 6px;
+    display: inline-block;
 }
 
 .score-counter {
@@ -86,7 +87,7 @@ canvas {
     }
 
     50% {
-        transform: scale(1.5);
+        transform: scale(1.2);
     }
 
     100% {

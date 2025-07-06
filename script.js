@@ -235,15 +235,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Draw player path if game is over
         if (gameOver && moveHistory.length > 1) {
-            ctx.strokeStyle = 'blue';
+            ctx.save();
+            ctx.strokeStyle = 'rgba(0, 0, 255, 0.7)';
             ctx.lineWidth = 3;
             ctx.beginPath();
             ctx.moveTo(moveHistory[0].c * CELL_SIZE + CELL_SIZE / 2, moveHistory[0].r * CELL_SIZE + CELL_SIZE / 2);
             for (let i = 1; i < moveHistory.length; i++) {
-                ctx.lineTo(moveHistory[i].c * CELL_SIZE + CELL_SIZE / 2, moveHistory[i].r * CELL_SIZE + CELL_SIZE / 2);
+            ctx.lineTo(moveHistory[i].c * CELL_SIZE + CELL_SIZE / 2, moveHistory[i].r * CELL_SIZE + CELL_SIZE / 2);
             }
             ctx.stroke();
             ctx.lineWidth = 1; // Reset to default
+            ctx.restore();
         }
     }
 
@@ -532,7 +534,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }, { passive: false });
 
-    updateCounters();
     setActiveDifficultyButton(mediumBtn); // Set initial active difficulty
     restartGame();
 });
