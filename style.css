@@ -10,7 +10,7 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background-color: #333;
+    background-color: #222;
     min-width: 100%;
 }
 
@@ -178,14 +178,15 @@ canvas {
 
 #flag-grid {
     display: grid;
-    grid-template-columns: repeat(3, 43px);
-    grid-template-rows: repeat(3, 43px);
+    grid-template-columns: repeat(3, 43.333px);
+    grid-template-rows: repeat(3, 43.333px);
     gap: 0px;
+    margin: 0px 35px;
 }
 
 .flag-grid-btn {
-    width: 43px !important;
-    height: 43px !important;
+    width: 43.333px !important;
+    height: 43.333px !important;
     background-color: rgb(177, 177, 177);
     margin: 0;
     padding: 0;

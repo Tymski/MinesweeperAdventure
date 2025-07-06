@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const hardBtn = document.getElementById('hard-btn');
     const winsCounter = document.getElementById('wins-counter');
     const lossesCounter = document.getElementById('losses-counter');
-    const bombsCounter = document.getElementById('bombs-counter');
+    const minesCounter = document.getElementById('mines-counter');
 
     let COLS = 11;
     let ROWS = 11;
@@ -42,9 +42,9 @@ document.addEventListener('DOMContentLoaded', () => {
         lossesCounter.textContent = losses;
     }
 
-    function updateBombsCounter() {
+    function updateMinesCounter() {
         const flaggedCells = board.flat().filter(cell => cell.isFlagged).length;
-        bombsCounter.textContent = NUM_MINES - flaggedCells;
+        minesCounter.textContent = NUM_MINES - flaggedCells;
     }
 
     function handleButtonClick(e, action) {
@@ -258,7 +258,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (cell.isFlagged) {
             cell.isFlagged = false;
-            updateBombsCounter();
+            updateMinesCounter();
         }
 
         cell.isRevealed = true;
@@ -430,7 +430,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
         board[r][c].isFlagged = !board[r][c].isFlagged;
-        updateBombsCounter();
+        updateMinesCounter();
         drawBoard();
     }
 
@@ -452,7 +452,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         mineSize = 1;
         createBoard();
-        updateBombsCounter();
+        updateMinesCounter();
         player = { r: TOTAL_ROWS - 1, c: Math.floor(COLS / 2) };
         moveHistory = [{ r: player.r, c: player.c }];
         drawBoard();
@@ -515,7 +515,6 @@ document.addEventListener('DOMContentLoaded', () => {
         handleButtonClick(e, () => {
             arrowControls.classList.toggle('hidden');
             flagGrid.classList.toggle('hidden');
-            flagBtn.classList.toggle('hidden');
         });
     });
 
@@ -534,7 +533,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 arrowControls.classList.remove('hidden');
                 flagGrid.classList.add('hidden');
-                flagBtn.classList.remove('hidden');
             });
         }
     });
