@@ -180,7 +180,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         drawCharacterInCell(cell.adjacentMines, r, c, getNumberColor(cell.adjacentMines));
                     }
                 } else if (cell.isFlagged) {
-                    drawCharacterInCell('🚩', r, c, 'red');
+                    drawCharacterInCell('P', r, c, 'red');
                 }
             }
         }
