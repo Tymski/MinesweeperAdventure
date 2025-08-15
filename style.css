@@ -105,6 +105,7 @@ canvas {
     flex-direction: column;
     align-items: center;
     margin-top: 20px;
+    position: relative;
 }
 
 .controls-container {
@@ -178,6 +179,9 @@ canvas {
     width: 40px;
     height: 40px;
     font-size: 1.5em;
+    position: absolute;
+    top: 0;
+    left: 0;
 }
 
 #flag-grid {
