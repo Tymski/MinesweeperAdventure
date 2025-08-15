@@ -504,7 +504,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const rightBtn = document.getElementById('right-btn');
     const flagBtn = document.getElementById('flag-btn');
     const flagGrid = document.getElementById('flag-grid');
-    const arrowControls = document.querySelector('.arrow-controls');
+
+    let flagMode = false;
 
     upBtn.addEventListener('click', (e) => { handleButtonClick(e, () => handleInput('up')); });
     downBtn.addEventListener('click', (e) => { handleButtonClick(e, () => handleInput('down')); });
@@ -513,7 +514,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     flagBtn.addEventListener('click', (e) => {
         handleButtonClick(e, () => {
-            arrowControls.classList.toggle('hidden');
+            flagMode = !flagMode;
             flagGrid.classList.toggle('hidden');
         });
     });
@@ -530,9 +531,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 } else {
                     toggleFlag(player.r + r, player.c + c);
                 }
-
-                arrowControls.classList.remove('hidden');
-                flagGrid.classList.add('hidden');
             });
         }
     });

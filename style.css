@@ -105,7 +105,13 @@ canvas {
     flex-direction: column;
     align-items: center;
     margin-top: 20px;
-    position: relative;
+}
+
+.controls-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+    width: 100%;
 }
 
 .arrow-controls {
@@ -165,9 +171,7 @@ canvas {
 }
 
 .flag-controls {
-    position: absolute;
-    top: 0;
-    right: -70px;
+    margin-top: 10px;
 }
 
 #flag-btn {
@@ -181,7 +185,8 @@ canvas {
     grid-template-columns: repeat(3, 43.333px);
     grid-template-rows: repeat(3, 43.333px);
     gap: 0px;
-    margin: 0px 35px;
+    margin: 0px;
+    margin-left: 10px;
 }
 
 .flag-grid-btn {

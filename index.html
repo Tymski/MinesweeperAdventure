@@ -26,32 +26,34 @@
     <canvas id="minesweeper-canvas"></canvas>
 
     <div class="controls">
-        <div class="arrow-controls">
-            <button id="up-btn" class="arrow-btn" tabindex="-1">
-                <div class="v-shape">V</div>
-            </button>
-            <div class="horizontal-controls">
-                <button id="left-btn" class="arrow-btn" tabindex="-1">
+        <div class="controls-container">
+            <div class="arrow-controls">
+                <button id="up-btn" class="arrow-btn" tabindex="-1">
                     <div class="v-shape">V</div>
                 </button>
-                <button id="down-btn" class="arrow-btn" tabindex="-1">
-                    <div class="v-shape">V</div>
-                </button>
-                <button id="right-btn" class="arrow-btn" tabindex="-1">
-                    <div class="v-shape">V</div>
-                </button>
+                <div class="horizontal-controls">
+                    <button id="left-btn" class="arrow-btn" tabindex="-1">
+                        <div class="v-shape">V</div>
+                    </button>
+                    <button id="down-btn" class="arrow-btn" tabindex="-1">
+                        <div class="v-shape">V</div>
+                    </button>
+                    <button id="right-btn" class="arrow-btn" tabindex="-1">
+                        <div class="v-shape">V</div>
+                    </button>
+                </div>
             </div>
-        </div>
-        <div id="flag-grid" class="hidden">
-            <button class="flag-grid-btn" data-r="-1" data-c="-1"><div class="v-shape">V</div></button>
-            <button class="flag-grid-btn" data-r="-1" data-c="0"><div class="v-shape">V</div></button>
-            <button class="flag-grid-btn" data-r="-1" data-c="1"><div class="v-shape">V</div></button>
-            <button class="flag-grid-btn" data-r="0" data-c="-1"><div class="v-shape">V</div></button>
-            <button class="flag-grid-btn" data-r="0" data-c="0">o</button>
-            <button class="flag-grid-btn" data-r="0" data-c="1"><div class="v-shape">V</div></button>
-            <button class="flag-grid-btn" data-r="1" data-c="-1"><div class="v-shape">V</div></button>
-            <button class="flag-grid-btn" data-r="1" data-c="0"><div class="v-shape">V</div></button>
-            <button class="flag-grid-btn" data-r="1" data-c="1"><div class="v-shape">V</div></button>
+            <div id="flag-grid" class="hidden">
+                <button class="flag-grid-btn" data-r="-1" data-c="-1"><div class="v-shape">V</div></button>
+                <button class="flag-grid-btn" data-r="-1" data-c="0"><div class="v-shape">V</div></button>
+                <button class="flag-grid-btn" data-r="-1" data-c="1"><div class="v-shape">V</div></button>
+                <button class="flag-grid-btn" data-r="0" data-c="-1"><div class="v-shape">V</div></button>
+                <button class="flag-grid-btn" data-r="0" data-c="0">o</button>
+                <button class="flag-grid-btn" data-r="0" data-c="1"><div class="v-shape">V</div></button>
+                <button class="flag-grid-btn" data-r="1" data-c="-1"><div class="v-shape">V</div></button>
+                <button class="flag-grid-btn" data-r="1" data-c="0"><div class="v-shape">V</div></button>
+                <button class="flag-grid-btn" data-r="1" data-c="1"><div class="v-shape">V</div></button>
+            </div>
         </div>
         <div class="flag-controls">
             <button id="flag-btn" tabindex="-1">🚩</button>
