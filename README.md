@@ -1,17 +1,26 @@
 # Minesweeper but you walk on the board
 
-This is a classic Minesweeper, but instead of clicking on the board to reveal tiles, you walk on the board to reveal the tiles.  
+This is a classic Minesweeper's variant - instead of clicking on the board to reveal tiles, you walk as a character on the board to reveal the tiles.  
 
-The goal is also different - you need to traverse from the bottom to the top of the board, instead of revealing the whole board.
+The goal is also different - you need to traverse from the bottom to the top of the board, instead of revealing the whole board. Go safely through the minefield.
 
-# Play now! On desktop or mobile
+## Play now! On desktop or mobile
 
 https://tymski.github.io/MinesweeperAdventure
 
 ## Keyboard controls
 
-- Arrow keys: movement
-- Q, W, E, A, D, Z, X, C - placing flags
+* Arrow keys: movement. You can move only in four directions.
+* Q, W, E, A, D, Z, X, C: placing and removing flags. You can place flags in 8 directions
+* Space: Reveal surrounding tiles without flags.
+
+## Progression
+
+When you win, the size od the board grows, when you lose it shrinks. Try to increase the board as much as you can!
+
+## Difficulty
+
+You can choose from Easy, Medium, and Hard. The harder the difficulty, the more mines are present on the board.
 
 ## Design and AI
 
