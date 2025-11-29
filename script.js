@@ -28,6 +28,13 @@ document.addEventListener('DOMContentLoaded', () => {
     let gameOutcome = null; // null, 'win', or 'loss'
     let moveHistory = [];
 
+    // Trail animation variables
+    let trail = { r: TOTAL_ROWS - 1, c: Math.floor(COLS / 2) }; // Current animated position
+    let trailTarget = { r: TOTAL_ROWS - 1, c: Math.floor(COLS / 2) }; // Target position
+    let trailAnimationStart = null; // Animation start timestamp
+    let trailAnimationActive = false; // Whether animation is running
+    const TRAIL_ANIMATION_DURATION = 100; // 0.1 seconds in milliseconds
+
     function updateCounters(isWin) {
         if (isWin) {
             winsCounter.parentElement.classList.add('score-animation');
@@ -142,6 +149,33 @@ document.addEventListener('DOMContentLoaded', () => {
         ctx.fillText(char, x + CELL_SIZE / 2, y + CELL_SIZE / 2);
     }
 
+    function animateTrail(timestamp) {
+        if (!trailAnimationStart) {
+            trailAnimationStart = timestamp;
+        }
+
+        const elapsed = timestamp - trailAnimationStart;
+        const progress = Math.min(elapsed / TRAIL_ANIMATION_DURATION, 1); // 0 to 1
+
+        // Linear interpolation from current position to target
+        const startR = trail.r;
+        const startC = trail.c;
+        trail.r = startR + (trailTarget.r - startR) * progress;
+        trail.c = startC + (trailTarget.c - startC) * progress;
+
+        drawBoard();
+
+        if (progress < 1) {
+            requestAnimationFrame(animateTrail);
+        } else {
+            // Animation complete
+            trail.r = trailTarget.r;
+            trail.c = trailTarget.c;
+            trailAnimationActive = false;
+            trailAnimationStart = null;
+        }
+    }
+
     function drawBoard() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         for (let r = 0; r < TOTAL_ROWS; r++) {
@@ -191,6 +225,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
         }
+
+        // Draw Trail (semi-transparent square following the player)
+        const trailX = trail.c * CELL_SIZE;
+        const trailY = trail.r * CELL_SIZE;
+        ctx.save();
+        ctx.globalAlpha = 0.4; // Semi-transparent
+        ctx.fillStyle = 'green';
+        ctx.fillRect(trailX, trailY, CELL_SIZE, CELL_SIZE);
+        ctx.strokeStyle = 'black';
+        ctx.lineWidth = 2;
+        ctx.strokeRect(trailX, trailY, CELL_SIZE, CELL_SIZE);
+        ctx.restore();
 
         // Draw Player
         const playerX = player.c * CELL_SIZE;
@@ -350,8 +396,21 @@ document.addEventListener('DOMContentLoaded', () => {
                 updateForwardButtonAnimation();
             }
 
+            // Update trail animation: set current trail position and new target
+            if (!trailAnimationActive) {
+                trail.r = player.r;
+                trail.c = player.c;
+            }
+
             player.r = newR;
             player.c = newC;
+
+            // Start trail animation to new player position
+            trailTarget.r = player.r;
+            trailTarget.c = player.c;
+            trailAnimationActive = true;
+            trailAnimationStart = null;
+            requestAnimationFrame(animateTrail);
             moveHistory.push({ r: player.r, c: player.c });
 
             if (!board[player.r][player.c].isStart && !board[player.r][player.c].isFinish) {
@@ -458,6 +517,11 @@ document.addEventListener('DOMContentLoaded', () => {
         updateMinesCounter();
         player = { r: TOTAL_ROWS - 1, c: Math.floor(COLS / 2) };
         moveHistory = [{ r: player.r, c: player.c }];
+        // Reset trail to player's starting position
+        trail = { r: player.r, c: player.c };
+        trailTarget = { r: player.r, c: player.c };
+        trailAnimationActive = false;
+        trailAnimationStart = null;
         updateForwardButtonAnimation();
         drawBoard();
     }
