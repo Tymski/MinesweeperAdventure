@@ -35,6 +35,15 @@ document.addEventListener('DOMContentLoaded', () => {
     let trailAnimationActive = false; // Whether animation is running
     const TRAIL_ANIMATION_DURATION = 100; // 0.1 seconds in milliseconds
 
+    // Intro animation variables
+    let introAnimationId = null;
+    let introAnimationStartTime = null;
+    let introPhase = 'climb'; // 'climb' or 'shrink'
+    const INTRO_CLIMB_DURATION = 1500;
+    const INTRO_SHRINK_DURATION = 800;
+    let introClimbProgress = 0; // 0 to 1
+    let introShrinkProgress = 0; // 0 to 1
+
     function updateCounters(isWin) {
         if (isWin) {
             winsCounter.parentElement.classList.add('score-animation');
@@ -176,6 +185,41 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    function animateIntro(timestamp) {
+        if (!firstMove) {
+            introAnimationId = null;
+            return;
+        }
+
+        if (!introAnimationStartTime) {
+            introAnimationStartTime = timestamp;
+        }
+
+        const elapsed = timestamp - introAnimationStartTime;
+
+        if (introPhase === 'climb') {
+            introClimbProgress = Math.min(elapsed / INTRO_CLIMB_DURATION, 1);
+            if (introClimbProgress >= 1) {
+                introPhase = 'shrink';
+                introAnimationStartTime = timestamp; // Reset for next phase
+                introClimbProgress = 1;
+                introShrinkProgress = 0;
+            }
+        } else if (introPhase === 'shrink') {
+            introShrinkProgress = Math.min(elapsed / INTRO_SHRINK_DURATION, 1);
+
+            if (introShrinkProgress >= 1) {
+                introPhase = 'climb';
+                introAnimationStartTime = timestamp; // Reset for next loop
+                introClimbProgress = 0;
+                introShrinkProgress = 0;
+            }
+        }
+
+        drawBoard();
+        introAnimationId = requestAnimationFrame(animateIntro);
+    }
+
     function drawBoard() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         for (let r = 0; r < TOTAL_ROWS; r++) {
@@ -188,6 +232,22 @@ document.addEventListener('DOMContentLoaded', () => {
                     ctx.fillStyle = '#a0a0a0';
                 } else if (cell.isFinish) {
                     ctx.fillStyle = '#9dab9d';
+
+                    // Apply glow effect during intro animation
+                    if (firstMove && introPhase === 'shrink') {
+                        // Interpolate between base color and bright green using a pulsing shrink intensity
+                        // Base: #9dab9d (157, 171, 157)
+                        // Target: #00ff00 (0, 255, 0)
+                        const pulse = Math.sin(introShrinkProgress * Math.PI);
+                        const baseR = 157, baseG = 171, baseB = 157;
+                        const targetR = 0, targetG = 255, targetB = 0;
+
+                        const currentR = Math.round(baseR + (targetR - baseR) * pulse * 0.6);
+                        const currentG = Math.round(baseG + (targetG - baseG) * pulse * 0.6);
+                        const currentB = Math.round(baseB + (targetB - baseB) * pulse * 0.6);
+
+                        ctx.fillStyle = `rgb(${currentR}, ${currentG}, ${currentB})`;
+                    }
                 }
                 else {
                     ctx.fillStyle = cell.isRevealed ? '#e0e0e0' : '#c0c0c0';
@@ -224,6 +284,51 @@ document.addEventListener('DOMContentLoaded', () => {
                     drawCharacterInCell('P', r, c, 'red');
                 }
             }
+        }
+
+        // Draw Intro Animation (Edges)
+        if (firstMove && (introPhase === 'climb' || introPhase === 'shrink')) {
+            const bottomY = canvas.height; // start off-canvas bottom
+            const topY = 0;
+
+            ctx.save();
+            ctx.strokeStyle = 'rgba(0, 255, 0, 0.6)';
+            ctx.lineWidth = 4;
+            ctx.lineCap = 'round';
+
+            if (introPhase === 'climb') {
+                // Grow from bottom up
+                const currentY = bottomY - (bottomY - topY) * introClimbProgress;
+
+                // Draw left edge trail
+                ctx.beginPath();
+                ctx.moveTo(2, bottomY);
+                ctx.lineTo(2, currentY);
+                ctx.stroke();
+
+                // Draw right edge trail
+                ctx.beginPath();
+                ctx.moveTo(canvas.width - 2, bottomY);
+                ctx.lineTo(canvas.width - 2, currentY);
+                ctx.stroke();
+            } else {
+                // Shrink from bottom to top: move bottom upward
+                const currentBottom = bottomY - (bottomY - topY) * introShrinkProgress;
+
+                // Draw left edge trail from current bottom up to the top
+                ctx.beginPath();
+                ctx.moveTo(2, currentBottom);
+                ctx.lineTo(2, topY);
+                ctx.stroke();
+
+                // Draw right edge trail
+                ctx.beginPath();
+                ctx.moveTo(canvas.width - 2, currentBottom);
+                ctx.lineTo(canvas.width - 2, topY);
+                ctx.stroke();
+            }
+
+            ctx.restore();
         }
 
         // Draw Trail (semi-transparent square following the player)
@@ -390,10 +495,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 return; // Don't move onto a flagged cell
             }
 
-            if (firstMove && newR > 0 && newR < TOTAL_ROWS - 1) {
-                firstMove = false;
-                generateMines(newR, newC);
-                updateForwardButtonAnimation();
+            if (firstMove) {
+                if (newR > 0 && newR < TOTAL_ROWS - 1) {
+                    firstMove = false;
+                    generateMines(newR, newC);
+                    updateForwardButtonAnimation();
+                    // Stop intro animation
+                    if (introAnimationId) {
+                        cancelAnimationFrame(introAnimationId);
+                        introAnimationId = null;
+                    }
+                } else {
+                    // If moving within start area, just ensure animation continues if needed (it should be running)
+                }
             }
 
             // Update trail animation: set current trail position and new target
@@ -523,6 +637,17 @@ document.addEventListener('DOMContentLoaded', () => {
         trailAnimationActive = false;
         trailAnimationStart = null;
         updateForwardButtonAnimation();
+
+        // Start intro animation
+        if (introAnimationId) {
+            cancelAnimationFrame(introAnimationId);
+        }
+        introPhase = 'climb';
+        introClimbProgress = 0;
+        introGlowIntensity = 0;
+        introAnimationStartTime = null;
+        introAnimationId = requestAnimationFrame(animateIntro);
+
         drawBoard();
     }
 
