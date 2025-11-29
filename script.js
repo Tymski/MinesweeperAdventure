@@ -281,6 +281,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function startGameOverAnimation() {
         gameOver = true;
+        updateForwardButtonAnimation();
         canvas.classList.add('lose-glow');
         let growing = true;
         animationInterval = setInterval(() => {
@@ -313,6 +314,7 @@ document.addEventListener('DOMContentLoaded', () => {
             gameOutcome = 'win';
             updateCounters(true);
             gameOver = true;
+            updateForwardButtonAnimation();
             canvas.classList.add('win-glow');
             if (animationInterval) clearInterval(animationInterval);
             drawBoard(); // Draw the final state before waiting for input
@@ -345,6 +347,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (firstMove && newR > 0 && newR < TOTAL_ROWS - 1) {
                 firstMove = false;
                 generateMines(newR, newC);
+                updateForwardButtonAnimation();
             }
 
             player.r = newR;
@@ -455,6 +458,7 @@ document.addEventListener('DOMContentLoaded', () => {
         updateMinesCounter();
         player = { r: TOTAL_ROWS - 1, c: Math.floor(COLS / 2) };
         moveHistory = [{ r: player.r, c: player.c }];
+        updateForwardButtonAnimation();
         drawBoard();
     }
 
@@ -538,6 +542,19 @@ document.addEventListener('DOMContentLoaded', () => {
     let touchStartX = 0;
     let touchStartY = 0;
     const SWIPE_THRESHOLD = 30; // Minimum distance for a swipe
+
+    // Toggle forward (up) button animation based on game state:
+    // - animate when before the first move (firstMove === true)
+    // - animate after the game finishes (gameOver === true)
+    // Do NOT animate during active play.
+    function updateForwardButtonAnimation() {
+        if (!upBtn) return;
+        if (firstMove || gameOver) {
+            upBtn.classList.add('forward-animate');
+        } else {
+            upBtn.classList.remove('forward-animate');
+        }
+    }
 
     canvas.addEventListener('touchstart', (e) => {
         e.preventDefault();
