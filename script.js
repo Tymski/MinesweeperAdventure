@@ -287,7 +287,7 @@ document.addEventListener('DOMContentLoaded', () => {
             ctx.beginPath();
             ctx.moveTo(moveHistory[0].c * CELL_SIZE + CELL_SIZE / 2, moveHistory[0].r * CELL_SIZE + CELL_SIZE / 2);
             for (let i = 1; i < moveHistory.length; i++) {
-            ctx.lineTo(moveHistory[i].c * CELL_SIZE + CELL_SIZE / 2, moveHistory[i].r * CELL_SIZE + CELL_SIZE / 2);
+                ctx.lineTo(moveHistory[i].c * CELL_SIZE + CELL_SIZE / 2, moveHistory[i].r * CELL_SIZE + CELL_SIZE / 2);
             }
             ctx.stroke();
             ctx.lineWidth = 1; // Reset to default

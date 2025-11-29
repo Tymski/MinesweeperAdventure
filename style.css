@@ -159,9 +159,17 @@ canvas {
 }
 
 /* Per-button base rotations (keeps chevrons pointing correctly) */
-#up-btn .v-shape { --base-rot: -180deg; }
-#left-btn .v-shape { --base-rot: 90deg; }
-#right-btn .v-shape { --base-rot: -90deg; }
+#up-btn .v-shape {
+    --base-rot: -180deg;
+}
+
+#left-btn .v-shape {
+    --base-rot: 90deg;
+}
+
+#right-btn .v-shape {
+    --base-rot: -90deg;
+}
 
 #up-btn {
     margin-bottom: 10px;
@@ -222,29 +230,61 @@ canvas {
 }
 
 
-.flag-grid-btn[data-r="-1"][data-c="-1"] .v-shape { --base-rot: 135deg; }
-.flag-grid-btn[data-r="-1"][data-c="0"] .v-shape  { --base-rot: 180deg; }
-.flag-grid-btn[data-r="-1"][data-c="1"] .v-shape  { --base-rot: 225deg; }
-.flag-grid-btn[data-r="0"][data-c="-1"] .v-shape  { --base-rot: 90deg; }
+.flag-grid-btn[data-r="-1"][data-c="-1"] .v-shape {
+    --base-rot: 135deg;
+}
+
+.flag-grid-btn[data-r="-1"][data-c="0"] .v-shape {
+    --base-rot: 180deg;
+}
+
+.flag-grid-btn[data-r="-1"][data-c="1"] .v-shape {
+    --base-rot: 225deg;
+}
+
+.flag-grid-btn[data-r="0"][data-c="-1"] .v-shape {
+    --base-rot: 90deg;
+}
 
 
-.flag-grid-btn[data-r="0"][data-c="1"] .v-shape   { --base-rot: -90deg; }
-.flag-grid-btn[data-r="1"][data-c="-1"] .v-shape { --base-rot: 45deg; }
-.flag-grid-btn[data-r="1"][data-c="0"] .v-shape  { --base-rot: 0deg; }
-.flag-grid-btn[data-r="1"][data-c="1"] .v-shape  { --base-rot: -45deg; }
+.flag-grid-btn[data-r="0"][data-c="1"] .v-shape {
+    --base-rot: -90deg;
+}
+
+.flag-grid-btn[data-r="1"][data-c="-1"] .v-shape {
+    --base-rot: 45deg;
+}
+
+.flag-grid-btn[data-r="1"][data-c="0"] .v-shape {
+    --base-rot: 0deg;
+}
+
+.flag-grid-btn[data-r="1"][data-c="1"] .v-shape {
+    --base-rot: -45deg;
+}
 
 .flag-grid-btn:hover {
     background-color: #a0a0a0;
 }
 
 @keyframes forward-rotate {
-    0% { transform: rotate(var(--base-rot)) rotate(-2.5deg); }
-    100% { transform: rotate(var(--base-rot)) rotate(2.5deg); }
+    0% {
+        transform: rotate(var(--base-rot)) rotate(-2.5deg);
+    }
+
+    100% {
+        transform: rotate(var(--base-rot)) rotate(2.5deg);
+    }
 }
 
 @keyframes forward-breathe {
-    0% { transform: scale(0.98); }
-    100% { transform: scale(1.03); }
+    0% {
+        transform: scale(0.98);
+    }
+
+    100% {
+        transform: scale(1.03);
+    }
 }
 
 .arrow-btn.forward-animate {
